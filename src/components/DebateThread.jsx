@@ -58,7 +58,7 @@ export default function DebateThread({ messages, loading, opinion }) {
               {msg.role === "assistant" ? (
                 <TypeWriter
                   text={msg.content}
-                  speed={18}
+                  speed={10}
                   onDone={() =>
                     bottomRef.current?.scrollIntoView({ behavior: "smooth" })
                   }
