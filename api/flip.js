@@ -34,6 +34,7 @@ export default async function handler(req, res) {
             - Try to finish in 60-80 words
             - Use simpler words like humans
             - Try to be more frank
+            - Be a bit rude
             - If the user concedes a point, push harder on another angle`,
           },
           ...messages,
