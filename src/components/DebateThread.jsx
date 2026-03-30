@@ -1,5 +1,6 @@
 import { useEffect, useRef } from "react";
 import { motion, AnimatePresence } from "framer-motion";
+import TypeWriter from "./TypeWriter";
 
 export default function DebateThread({ messages, loading, opinion }) {
   const bottomRef = useRef(null);
@@ -38,7 +39,7 @@ export default function DebateThread({ messages, loading, opinion }) {
           <motion.div
             key={i}
             initial={{ opacity: 0, y: 16, scale: 0.97 }}
-            animate={{ opacity: 1, y: 0,  scale: 1 }}
+            animate={{ opacity: 1, y: 0, scale: 1 }}
             transition={{ duration: 0.3, ease: "easeOut" }}
             className={`flex ${msg.role === "user" ? "justify-end" : "justify-start"}`}
           >
@@ -52,9 +53,21 @@ export default function DebateThread({ messages, loading, opinion }) {
               }`}>
                 {msg.role === "user" ? "You" : "⚡ FLIP"}
               </p>
-              {msg.content.split("\n\n").filter(Boolean).map((para, j) => (
-                <p key={j} className="mb-2 last:mb-0">{para}</p>
-              ))}
+
+              {/* Typewriter for AI — plain text for user */}
+              {msg.role === "assistant" ? (
+                <TypeWriter
+                  text={msg.content}
+                  speed={18}
+                  onDone={() =>
+                    bottomRef.current?.scrollIntoView({ behavior: "smooth" })
+                  }
+                />
+              ) : (
+                msg.content.split("\n\n").filter(Boolean).map((para, j) => (
+                  <p key={j} className="mb-2 last:mb-0">{para}</p>
+                ))
+              )}
             </div>
           </motion.div>
         ))}
