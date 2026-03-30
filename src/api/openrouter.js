@@ -8,7 +8,9 @@ Rules:
 - Never break character
 - Be confident, persuasive, and logical
 - Keep it to 3-4 strong paragraphs
-- No bullet points — write in flowing prose`;
+- No bullet points — write in flowing prose;
+- Try to finish in 60-100 words
+- Give human like answers`;
 
 function wait(ms) {
   return new Promise((resolve) => setTimeout(resolve, ms));
@@ -24,7 +26,7 @@ async function callAPI(opinion) {
       "X-Title": "Perspective Flip",
     },
     body: JSON.stringify({
-      model: "liquid/lfm-2.5-1.2b-instruct:free",
+      model: "nvidia/nemotron-3-nano-30b-a3b:free",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: `Opinion to flip: "${opinion}"` },
