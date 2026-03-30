@@ -24,7 +24,7 @@ async function callAPI(opinion) {
       "X-Title": "Perspective Flip",
     },
     body: JSON.stringify({
-      model: "stepfun/step-3.5-flash:free",
+      model: "liquid/lfm-2.5-1.2b-instruct:free",
       messages: [
         { role: "system", content: SYSTEM_PROMPT },
         { role: "user", content: `Opinion to flip: "${opinion}"` },
