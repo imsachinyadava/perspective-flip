@@ -1,12 +1,9 @@
-const API_KEY = import.meta.env.VITE_OPENROUTER_API_KEY;
-
 const SYSTEM_PROMPT = `You are a steel-manning debate engine. Your job is to always argue the opposing side of whatever the user believes — firmly, logically, and persuasively.
 
 Rules:
 - Always argue AGAINST the user's position
 - Never agree with the user, ever
 - Respond directly to their latest argument
-- Keep responses to 2-3 paragraphs
 - Be confident and assertive, not aggressive
 - No bullet points — flowing prose only
 - Try to finish in 60-100 words
@@ -19,30 +16,19 @@ function wait(ms) {
 }
 
 async function callAPI(messages) {
-  const response = await fetch("https://openrouter.ai/api/v1/chat/completions", {
+  const response = await fetch("/api/flip", {
     method: "POST",
-    headers: {
-      "Content-Type": "application/json",
-      "Authorization": `Bearer ${API_KEY}`,
-      "HTTP-Referer": "http://localhost:5173",
-      "X-Title": "Perspective Flip",
-    },
-    body: JSON.stringify({
-      model: "nvidia/nemotron-3-nano-30b-a3b:free",
-      messages: [
-        { role: "system", content: SYSTEM_PROMPT },
-        ...messages,
-      ],
-    }),
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ messages }),
   });
 
   if (!response.ok) {
     const err = await response.json();
-    throw new Error(`API error: ${response.status} — ${err?.error?.message}`);
+    throw new Error(`API error: ${response.status} — ${err?.error}`);
   }
 
   const data = await response.json();
-  return data.choices[0].message.content;
+  return data.result;
 }
 
 export async function getFlippedPerspective(messages) {
@@ -61,7 +47,7 @@ export async function getFlippedPerspective(messages) {
       return {
         success: false,
         error: is429
-          ? "Too many requests — please wait a few seconds and try again."
+          ? "Too many requests — please wait a few seconds."
           : error.message,
       };
     }
